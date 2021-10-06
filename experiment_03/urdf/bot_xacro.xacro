@@ -87,6 +87,7 @@
     </joint>
   </xacro:macro>
 
+  <!-- defining joints -->
   <xacro:wheel_joint_macro position="front_left"  xyz=" 0.15  0.15 0" />
   <xacro:wheel_joint_macro position="front_right" xyz=" 0.15 -0.15 0" />
   <xacro:wheel_joint_macro position="back_left"   xyz="-0.15  0.15 0" />
