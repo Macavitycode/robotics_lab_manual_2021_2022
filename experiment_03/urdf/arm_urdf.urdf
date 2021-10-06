@@ -23,10 +23,10 @@
   <joint name="base_footprint_joint" type="fixed">
     <origin xyz="0 0 0.02" rpy="0 0 0"/>
     <parent link="base_footprint"/>
-    <child link="link_base"/>
+    <child link="base_link"/>
   </joint>
 
-  <link name="link_base">
+  <link name="base_link">
     <inertial>
       <mass value="5"/>
       <inertia ixx="0.013166666666666669" ixy="0.0" ixz="0.0" 
@@ -108,7 +108,7 @@
 
   <joint name="link_1_joint" type="revolute">
     <origin xyz="0 0 0.1" rpy="0 0 0"/>
-    <parent link="link_base"/>
+    <parent link="base_link"/>
     <child link="link_1"/>
     <axis rpy="0 0 0" xyz="0 0 1"/>
     <limit lower="-1.5708" upper="1.5708" effort="100" velocity="1"/>

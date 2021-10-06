@@ -2,13 +2,11 @@ cmake_minimum_required(VERSION 2.8.3)
 project(experiment_03)
 
 find_package(catkin REQUIRED COMPONENTS
-    roscpp
-    rospy
+    xacro
 )
 
-catkin_package(CATKIN_DEPENDS roscpp)
+catkin_package()
 
 include_directories(
-    include
     ${catkin_INCLUDE_DIRS}
 )
