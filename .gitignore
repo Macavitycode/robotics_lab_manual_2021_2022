@@ -4,5 +4,6 @@
 
 !experiment_*
 !experiment_*/*
+!experiment_*/**
 
 *.log
