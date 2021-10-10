@@ -1,0 +1,15 @@
+<package format='2'>
+
+	<name>srvclient</name>
+	<version>1.0.0</version>
+	<description>
+		Package that demonstrates service and client
+	</description>
+	<maintainer email="praneeth.pep@gmail.com">kvk praneeth</maintainer>
+	<license>BSD</license>
+
+	<buildtool_depend>catkin</buildtool_depend>
+
+	<depend>rospy</depend>
+
+</package>

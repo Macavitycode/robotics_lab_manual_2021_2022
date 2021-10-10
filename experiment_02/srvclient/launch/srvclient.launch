@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+  
+	<node name="server" pkg="srvclient" type="service.py" output="screen"/>
+	<node name="client" pkg="srvclient" type="client.py" output="screen"/>
+
+</launch>
