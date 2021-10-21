@@ -57,12 +57,10 @@ class Publisher:
         self.publisher.publish(self.msg)
 
 if __name__ == '__main__':
-    
+
     p = Publisher("topic1", 1)
     """
     Think of spin that does not let a program stop and let's the timer run 
     periodically
     """
-    rospy.spin()
-
-
+    rospy.spin()    

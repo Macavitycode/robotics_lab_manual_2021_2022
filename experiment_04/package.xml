@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>experiment_04</name>
+  <version>0.0.0</version>
+  <description>The Fourth experiment of the lab manual</description>
+
+  <maintainer email="user@todo.todo">Kvk Praneeth</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+
+</package>
