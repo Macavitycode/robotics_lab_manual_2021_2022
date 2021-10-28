@@ -77,22 +77,22 @@ class Proportional:
         error_theta = math.atan2(self.goal[1], self.goal[0]) - yaw
 
         error_linear = math.sqrt(error_x**2 + error_y**2)
-        msg_ = Twist()
+        new_msg = Twist()
 
         if(abs(error_theta) > 0.1):
-            msg_.angular.z = self.ka*error_theta
-            msg_.linear.x = 0
+            new_msg.angular.z = self.ka*error_theta
+            new_msg.linear.x = 0
 
         else:
             if(abs(error_linear) > 0.2):
-                msg_.linear.x = self.kx*error_linear
-                msg_.angular.z = 0
+                new_msg.linear.x = self.kx*error_linear
+                new_msg.angular.z = 0
             
             else:
-                msg_.linear.x = 0
-                msg_.angular.z = 0
+                new_msg.linear.x = 0
+                new_msg.angular.z = 0
 
-        self.controlPub.publish(msg_)
+        self.controlPub.publish(new_msg)
 
 
 

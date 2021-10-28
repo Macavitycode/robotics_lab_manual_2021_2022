@@ -10,7 +10,7 @@ from tf.transformations import euler_from_quaternion
 
 import math
 
-from experiment_04_msg.msg import coor
+from experiment_04_msg.msg import GoalCoor
 
 class Proportional:
     """
@@ -57,7 +57,7 @@ class Proportional:
 
         self.odomSub = rospy.Subscriber("/odom", Odometry, self.control)
 
-        self.odomSub = rospy.Subscriber("/cmd_goal", coor, self.set_goal_from_msg)
+        self.odomSub = rospy.Subscriber("/cmd_goal", GoalCoor, self.set_goal_from_msg)
 
         # K gain for angle
         self.ka = ka
@@ -87,22 +87,22 @@ class Proportional:
         roll = 0
 
         error_linear = math.sqrt(error_x**2 + error_y**2)
-        msg_ = Twist()
+        new_msg = Twist()
 
         if(abs(error_theta) > 0.1):
-            msg_.angular.z = self.ka*error_theta
-            msg_.linear.x = 0
+            new_msg.angular.z = self.ka*error_theta
+            new_msg.linear.x = 0
 
         else:
             if(abs(error_linear) > 0.2):
-                msg_.linear.x = self.kx*error_linear
-                msg_.angular.z = 0
+                new_msg.linear.x = self.kx*error_linear
+                new_msg.angular.z = 0
             
             else:
-                msg_.linear.x = 0
-                msg_.angular.z = 0
+                new_msg.linear.x = 0
+                new_msg.angular.z = 0
 
-        self.controlPub.publish(msg_)
+        self.controlPub.publish(new_msg)
 
 
 
