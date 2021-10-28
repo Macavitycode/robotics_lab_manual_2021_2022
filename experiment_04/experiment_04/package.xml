@@ -11,5 +11,8 @@
   <depend>rospy</depend>
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>experiment_04_msg</depend>
+  <depend>message_runtime</depend>
 
 </package>

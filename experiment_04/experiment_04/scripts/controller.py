@@ -15,7 +15,10 @@ class Proportional:
     This Class is meant to explain Proportional Control using ROS.
     """
 
-    def __init__(self, x, y):
+    def set_goal(self, x, y):
+        self.goal = [x, y]
+
+    def __init__(self, ka, kx, x=1, y=1):
 
         """
         Proportional Controller:
@@ -56,12 +59,13 @@ class Proportional:
         self.odomSub = rospy.Subscriber("/odom", Odometry, self.control)
 
         # K gain for angle
-        self.ka = 0.75
+        self.ka = ka
 
         # K gain for velocity
-        self.kx = 0.3
+        self.kx = kx
 
-        self.goal = [x, y]
+        self.set_goal(x, y)
+
 
     def control(self, msg):
 
@@ -93,6 +97,6 @@ class Proportional:
 
 
 if __name__ == '__main__':
-    
-    p = Proportional(1, 1)
+
+    p = Proportional(0.75, 0.3, 1, 1)
     rospy.spin()
