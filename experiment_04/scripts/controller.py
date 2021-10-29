@@ -47,9 +47,6 @@ class Proportional:
 
         print("Initializing Node")
 
-        # Initializes the Node.
-        rospy.init_node("publisher_node")
-
         # Initializes a publihser within the node
         self.controlPub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
 
@@ -93,6 +90,7 @@ class Proportional:
 
 
 if __name__ == '__main__':
-    
+
+    rospy.init_node("publisher_node")
     p = Proportional(1, 1)
     rospy.spin()

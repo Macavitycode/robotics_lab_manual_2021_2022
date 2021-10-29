@@ -29,7 +29,7 @@ class client:
            
             request = SetBoolRequest()
 
-            request.data = True
+            request.data = False
 
             print("Send Request: ", request)
 
