@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <include file="$(find experiment_05)/launch/mobile_robot_xacro.launch"/>
+  <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" /> -->
+  <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> -->
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find experiment_05)/config/config.rviz" /> -->
+  <node name="controller" pkg="experiment_05" type="camera_to_ball_control.py" output="screen"/>
+</launch>

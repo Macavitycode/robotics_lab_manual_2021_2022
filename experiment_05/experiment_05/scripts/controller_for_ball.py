@@ -28,7 +28,7 @@ class Controller:
 
         # Initializes a publihser within the node
         self.controlPub = rospy.Publisher("/follower/cmd_vel", Twist, queue_size=10)
-        self.odomSub = rospy.Subscriber("/follower/odom", Odometry, self.control)
+        #  self.odomSub = rospy.Subscriber("/follower/odom", Odometry, self.control)
         self.cameraSub = rospy.Subscriber("/follower/camera1/image_raw", Image,
                 self.image_proc)
 
@@ -46,12 +46,13 @@ class Controller:
         self.ideal_follow_center = 200
         self.scale_c = 1/6000
 
-        self.goal = [0, 0]
+        #  self.goal = [0, 0]
 
         self.bridge = CvBridge()
 
 
     def image_proc(self, msg):
+
         
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -97,26 +98,26 @@ class Controller:
                     2, 
                     cv2.LINE_4)
 
-            self.goal[0] += (self.ideal_follow_radius - radius) * self.scale_r
-            self.goal[1] = (self.ideal_follow_center - center[0]) * self.scale_c
+            #  self.goal[0] += (self.ideal_follow_radius - radius) * self.scale_r
+            #  self.goal[1] = (self.ideal_follow_center - center[0]) * self.scale_c
 
         except:
             #  print(mask.shape)
             #  print("Circle not found")
             pass
 
-        goal_text = ("goal: " + 
-            str(round(self.goal[0], 1)) +
-            ", " +
-            str(round(self.goal[1], 1)))
-
-        cv2.putText(image, 
-                goal_text,
-                (10, 75),
-                cv2.FONT_HERSHEY_SIMPLEX, 1,
-                (255, 0, 0), 
-                2, 
-                cv2.LINE_4)
+        #  goal_text = ("goal: " +
+        #      str(round(self.goal[0], 1)) +
+        #      ", " +
+        #      str(round(self.goal[1], 1)))
+        #
+        #  cv2.putText(image,
+        #          goal_text,
+        #          (10, 75),
+        #          cv2.FONT_HERSHEY_SIMPLEX, 1,
+        #          (255, 0, 0),
+        #          2,
+        #          cv2.LINE_4)
             
 
         cv2.imshow("mask", image)
@@ -124,41 +125,42 @@ class Controller:
         cv2.waitKey(1)
 
 
-    def control(self, msg):
+    #  def control(self, msg):
 
-        quat = msg.pose.pose.orientation
-        (roll, pitch, yaw) = euler_from_quaternion([quat.x, quat.y, quat.z, quat.w])
 
-        print("yaw: " + str(yaw))
-
-        error_theta = atan2(self.goal[1], self.goal[0]) - yaw
-
-        error_x = msg.pose.pose.position.x - self.goal[0]
-        error_y = msg.pose.pose.position.y - self.goal[1]
-
-        error_linear = sqrt(error_x**2 + error_y**2)
-
-        new_msg = Twist()
-
-        if(abs(error_theta) > 0.1):
-            print("theta: " + str(error_theta))
-            new_msg.angular.z = self.ka * error_theta
-            new_msg.linear.x = 0
-
-        else:
-            if(abs(error_linear) > 0.2):
-                print("linear: " + str(error_linear))
-                new_msg.linear.x = self.kx * error_linear
-                new_msg.angular.z = 0
-            
-            else:
-                new_msg.linear.x = 0
-                new_msg.angular.z = 0
-
-        #  print(self.goal)
-        #  print(error_linear, error_theta)
-
-        self.controlPub.publish(new_msg)
+        #  quat = msg.pose.pose.orientation
+        #  (roll, pitch, yaw) = euler_from_quaternion([quat.x, quat.y, quat.z, quat.w])
+        #
+        #  print("yaw: " + str(yaw))
+        #
+        #  error_theta = atan2(self.goal[1], self.goal[0]) - yaw
+        #
+        #  error_x = msg.pose.pose.position.x - self.goal[0]
+        #  error_y = msg.pose.pose.position.y - self.goal[1]
+        #
+        #  error_linear = sqrt(error_x**2 + error_y**2)
+        #
+        #  new_msg = Twist()
+        #
+        #  if(abs(error_theta) > 0.1):
+        #      print("theta: " + str(error_theta))
+        #      new_msg.angular.z = self.ka * error_theta
+        #      new_msg.linear.x = 0
+        #
+        #  else:
+        #      if(abs(error_linear) > 0.2):
+        #          print("linear: " + str(error_linear))
+        #          new_msg.linear.x = self.kx * error_linear
+        #          new_msg.angular.z = 0
+        #
+        #      else:
+        #          new_msg.linear.x = 0
+        #          new_msg.angular.z = 0
+        #
+        #  #  print(self.goal)
+        #  #  print(error_linear, error_theta)
+        #
+        #  self.controlPub.publish(new_msg)
 
 
 

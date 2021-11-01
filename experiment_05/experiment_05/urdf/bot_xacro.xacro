@@ -16,13 +16,13 @@
       <rightRearJoint>back_right_wheel_joint</rightRearJoint>
       <wheelSeparation>0.3</wheelSeparation>
       <wheelDiameter>0.2</wheelDiameter>
-      <robotBaseFrame>base_link</robotBaseFrame>
+      <robotBaseFrame>base_footprint</robotBaseFrame>
       <torque>20</torque>
-      <topicName>cmd_vel</topicName>
+      <topicName>/follower/cmd_vel</topicName>
       <broadcastTF>false</broadcastTF>
     </plugin>
   </gazebo>
-
+  
   <!-- camera -->
   <gazebo reference="camera_link">
     <sensor type="camera" name="camera1">
@@ -30,8 +30,8 @@
       <camera name="head">
         <horizontal_fov>1.3962634</horizontal_fov>
         <image>
-          <width>800</width>
-          <height>600</height>
+          <width>400</width>
+          <height>300</height>
           <format>R8G8B8</format>
         </image>
         <clip>

@@ -16,9 +16,9 @@
       <rightRearJoint>back_right_wheel_joint</rightRearJoint>
       <wheelSeparation>0.3</wheelSeparation>
       <wheelDiameter>0.2</wheelDiameter>
-      <robotBaseFrame>base_link</robotBaseFrame>
+      <robotBaseFrame>base_footprint</robotBaseFrame>
       <torque>20</torque>
-      <topicName>cmd_vel</topicName>
+      <topicName>/follower/cmd_vel</topicName>
       <broadcastTF>false</broadcastTF>
     </plugin>
   </gazebo>

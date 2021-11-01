@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
   
-  <param name="robot_description" textfile="$(find experiment_05)/urdf/bot_urdf.urdf" />
+  <param name="robot_description" command="$(find xacro)/xacro $(find experiment_05)/urdf/bot_xacro.xacro" />
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
     args="-param robot_description -urdf -model skid_steer_bot" />
 
   <!-- Set name of the world to be launched -->
   <arg name="world" default="$(find experiment_05)/world/simple_ball.world"/>
 
-  <arg name="paused" default="true"/>
+  <arg name="paused" default="false"/>
   <arg name="use_sim_time" default="true"/>
   <arg name="gui" default="true"/>
   <arg name="headless" default="false"/>

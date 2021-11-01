@@ -88,7 +88,7 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <model name='unit_sphere'>
-      <pose>2 0 0 0 -0 0</pose>
+      <pose>3 0 0 0 -0 0</pose>
       <link name='link'>
         <inertial>
           <mass>1</mass>
