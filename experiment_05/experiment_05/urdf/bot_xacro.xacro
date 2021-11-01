@@ -1,0 +1,159 @@
+<?xml version="1.0" ?>
+
+<robot name="skid_steer_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <gazebo reference="link_chassis">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+  
+  <gazebo>
+    <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+      <updateRate>100.0</updateRate>
+      <robotNamespace>/follower</robotNamespace>
+      <leftFrontJoint>front_left_wheel_joint</leftFrontJoint>
+      <rightFrontJoint>front_right_wheel_joint</rightFrontJoint>
+      <leftRearJoint>back_left_wheel_joint</leftRearJoint>
+      <rightRearJoint>back_right_wheel_joint</rightRearJoint>
+      <wheelSeparation>0.3</wheelSeparation>
+      <wheelDiameter>0.2</wheelDiameter>
+      <robotBaseFrame>base_link</robotBaseFrame>
+      <torque>20</torque>
+      <topicName>cmd_vel</topicName>
+      <broadcastTF>false</broadcastTF>
+    </plugin>
+  </gazebo>
+
+  <!-- camera -->
+  <gazebo reference="camera_link">
+    <sensor type="camera" name="camera1">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>800</width>
+          <height>600</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.2</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>/follower/camera1</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <link name="camera_link">
+    <inertial>
+      <mass value="1"/>
+      <origin rpy="0 0 0" xyz="0 0 0.1"/>
+      <inertia ixx="0.00036458333333333335" ixy="0.0" ixz="0.0"
+        iyy="0.00036458333333333335" iyz="0.0" izz="0.00031250000000000006"/>
+    </inertial>
+    <collision>
+      <geometry>
+        <cylinder length="0.05" radius="0.025" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="0.025" />
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.23 0 0.07"/>
+    <child link="camera_link"/>
+    <parent link="link_chassis"/>
+  </joint>
+
+  <link name="link_chassis">
+    <pose>0 0 0.1 0 0 0</pose>
+    <inertial>
+      <mass value="5"/>
+      <origin rpy="0 0 0" xyz="0 0 0.1"/>
+      <inertia ixx="0.0395416666667" ixy="0" ixz="0" iyy="0.106208333333"
+        iyz="0" izz="0.106208333333"/>
+    </inertial>
+    <collision>
+      <geometry>
+        <box size="0.5 0.3 0.07"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.5 0.3 0.07"/>
+      </geometry>
+    </visual>
+  </link>
+  
+  <!-- defining wheel macro -->
+  <xacro:macro name="wheel_link_macro" params="position">
+    <link name="link_${position}_wheel">
+      <inertial>
+        <mass value="0.2"/>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667"
+          iyz="0" izz="0.001"/>
+      </inertial>
+      <collision name="link_${position}_wheel_collision">
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <geometry>
+          <cylinder length="0.04" radius="0.1"/>
+        </geometry>
+      </collision>
+      <visual name="link_${position}_wheel_visual">
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <geometry>
+          <cylinder length="0.04" radius="0.1"/>
+        </geometry>
+      </visual>
+    </link>
+  </xacro:macro>
+
+  <!-- defining wheels -->
+  <xacro:wheel_link_macro position="front_left" />
+  <xacro:wheel_link_macro position="front_right" />
+  <xacro:wheel_link_macro position="back_left" />
+  <xacro:wheel_link_macro position="back_right" />
+
+  <!-- defining joint macro -->
+  <xacro:macro name="wheel_joint_macro" params="position xyz">
+    <joint name="${position}_wheel_joint" type="continuous">
+      <origin rpy="0 0 0" xyz="${xyz}"/>
+      <child link="link_${position}_wheel"/>
+      <parent link="link_chassis"/>
+      <axis rpy="0 0 0" xyz="0 1 0"/>
+      <limit effort="100" velocity="1"/>
+      <joint_properties damping="1.0" friction="1.0"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- defining joints -->
+  <xacro:wheel_joint_macro position="front_left"  xyz=" 0.15  0.15 0" />
+  <xacro:wheel_joint_macro position="front_right" xyz=" 0.15 -0.15 0" />
+  <xacro:wheel_joint_macro position="back_left"   xyz="-0.15  0.15 0" />
+  <xacro:wheel_joint_macro position="back_right"  xyz="-0.15 -0.15 0" />
+</robot>

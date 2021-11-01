@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>experiment_05</name>
+  <version>0.0.0</version>
+  <description>The fifth experiment of the lab manual</description>
+
+  <maintainer email="user@todo.todo">Shashank Moghe</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cv_bridge</depend>
+
+</package>
