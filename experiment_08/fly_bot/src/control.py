@@ -44,28 +44,30 @@ def control_kwad(msg, args):
     args[3].publish(err_yaw)
 
 
+if __name__ == "__main__":
+
 # Initiate the node that will control the gazebo model
-rospy.init_node("Control")
+    rospy.init_node("Control")
 
 # Initiate publishers that publish errors (roll, pitch,yaw - setpoint) so that
 # it can be plotted via rqt_plot /err_<name>  
 
-err_rollPub = rospy.Publisher('err_roll', Float32, queue_size=1)
-err_pitchPub = rospy.Publisher('err_pitch', Float32, queue_size=1)
-err_yawPub = rospy.Publisher('err_yaw', Float32, queue_size=1)
+    err_rollPub = rospy.Publisher('err_roll', Float32, queue_size=1)
+    err_pitchPub = rospy.Publisher('err_pitch', Float32, queue_size=1)
+    err_yawPub = rospy.Publisher('err_yaw', Float32, queue_size=1)
 
 # Initialte publisher velPub that will publish the velocities of individual
 # BLDC motors
-velPub = rospy.Publisher('/Kwad/joint_motor_controller/command',
-        Float64MultiArray, queue_size=4)
+    velPub = rospy.Publisher('/Kwad/joint_motor_controller/command',
+            Float64MultiArray, queue_size=4)
 
 # Subscribe to /gazebo/model_states to obtain the pose in quaternion form
 # Upon receiveing the messages, the objects msg, velPub, err_rollPub, 
 # err_pitchPub and err_yawPub are sent to "control_kwad" function.
 
-PoseSub = rospy.Subscriber('/gazebo/model_states',ModelStates,control_kwad,
-        (velPub, err_rollPub, err_pitchPub, err_yawPub))
+    PoseSub = rospy.Subscriber('/gazebo/model_states',ModelStates,control_kwad,
+            (velPub, err_rollPub, err_pitchPub, err_yawPub))
 
 # Spinning 
-rospy.spin()
+    rospy.spin()
 
