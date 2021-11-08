@@ -51,13 +51,21 @@ class Controller:
         r = None
         c = None
         
+        image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+
         try:
-            (r, c) = self.img_proc(msg)
             
-            print(type(r), type(c))
+            (r, c) = self.img_proc(image)
+
+            cv2.imshow("masked image", image)
+            cv2.waitKey(1)
 
         except:
             print("No circles found")
+
+            cv2.imshow("masked image", image)
+            cv2.waitKey(1)
+    
 
         if r is not None:
             new_msg.linear.x = (self.ideal_follow_radius - r) * self.kr
@@ -66,9 +74,8 @@ class Controller:
         self.controlPub.publish(new_msg)
 
         
-    def img_proc(self, msg):
+    def img_proc(self, image):
 
-        image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         
         lower_red = (0, 100, 20)
@@ -105,8 +112,7 @@ class Controller:
                 2, 
                 cv2.LINE_4)
 
-        cv2.imshow("masked image", image)
-        cv2.waitKey(1)
+
 
         return (radius, center[0])
 
